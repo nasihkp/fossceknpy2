@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content"
+import PageLayout from "@layouts/PageLayout.astro"
+import TopLayout from "@layouts/TopLayout.astro"
+import BottomLayout from "@layouts/BottomLayout.astro"
+import About from "@components/About"
+import { ABOUT } from "@consts"
+
+const posts = (await getCollection("about"))
+const tags = [...new Set(posts.flatMap(post => post.data.tags))]
+  .sort((a, b) => a.localeCompare(b))
+---
+
+<PageLayout title={ABOUT.TITLE} description={ABOUT.DESCRIPTION}>
+  <TopLayout>
+    <div class="animate page-heading">
+      {ABOUT.TITLE}
+    </div>
+  </TopLayout>
+  <BottomLayout>
+    <div class="animate">
+      <About client:load tags={tags} data={About} />
+    </div>
+  </BottomLayout>
+</PageLayout>
+
+
